@@ -1,5 +1,18 @@
-import { Controller, Get, HttpCode, Header, Redirect, Param } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	HttpCode,
+	Header,
+	Redirect,
+	Param,
+	Query,
+	Post,
+	Body,
+} from '@nestjs/common';
 import { ProjectService } from './project.service';
+
+import SearchProjectDto from './dto/search-project.dto';
+import CreateProjectDto from './dto/create-project.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -18,5 +31,15 @@ export class ProjectController {
 	@Get(':id')
 	getProject(@Param('id') id: string): Object {
 		return this.projectService.findOneById(id);
+	}
+
+	@Get()
+	search(@Query() searchProjectDto: SearchProjectDto): Object {
+		return this.projectService.findByParams(searchProjectDto);
+	}
+
+	@Post()
+	createProject(@Body() createProjectDto: CreateProjectDto): Object {
+		return this.projectService.create(createProjectDto);
 	}
 }
